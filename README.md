@@ -1,12 +1,31 @@
+<!-- PROJECT LOGO -->
+<h1 align="center">PL2</h1>
+<p align="center">
+  Package for transcoding PL2 image files.
+  <br />
+  <br />
+  <a href="https://github.com/gravestench/dcc/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/gravestench/dcc/issues">Request Feature</a>
+</p>
+
 # About
 This code is a derivation of Lectem's work, [found here](https://github.com/Lectem/Worldstone).
 
-This repo contains a package for decoding and encoding PL2 files, as well as some command line tools and shell scripts.
+This repo contains a codec for PL2 palette transformation files, as well as some command line tools and shell scripts.
 
 ## PL2 - A Palette Transformation data structure
 The PL2 file format was used in Blizzard's Diablo 2, and is a relic of the 8-bit gaming industry.
 
-The PL2 data structure represents a color palette, and many pre-computed transformations into that palette. The color palette contains 256 colors, each of which has 8-bit RGB components and no alpha support. After the palette, there several categories of "transformations" into the palette (eg. gamma, contrast, blend modes, hue shifts).  After the palette and transforms, **there is another palette and set of transformations**. This second palette and set of transformations is intended to be used for bitmap fonts.
+The PL2 data structure represents a color palette, 
+and many pre-computed transformations into that palette. 
+The color palette contains 256 colors, each of which has 8-bit RGB 
+components and no alpha support. After the palette, there are 
+several categories of "transformations" into the palette 
+(eg. gamma, contrast, blend modes, hue shifts).  
+
+After the palette and transforms, **there is another palette and set of transformations**. 
+This second palette and set of transformations is intended to be used for bitmap fonts.
 
 ### More about the data structure
 In the following table, **a transform is 256 bytes**, each byte is an index that points to a color in the palette of the PL2.
