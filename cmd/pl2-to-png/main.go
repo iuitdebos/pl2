@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/gravestench/pl2/pkg"
+	"github.com/OpenDiablo2/pl2/pkg"
 )
 
 type options struct {

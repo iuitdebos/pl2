@@ -9,8 +9,9 @@ import (
 	"log"
 	"os"
 
+	pl2 "github.com/OpenDiablo2/pl2/pkg"
+
 	gpl "github.com/gravestench/gpl/pkg"
-	pl2 "github.com/gravestench/pl2/pkg"
 )
 
 

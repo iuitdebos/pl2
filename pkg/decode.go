@@ -6,7 +6,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/gravestench/bitstream"
+	"github.com/OpenDiablo2/bitstream"
 )
 
 func (pl2 *PL2) Decode(rs io.ReadSeeker) (*PL2, error) {
