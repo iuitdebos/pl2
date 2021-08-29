@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"io/ioutil"
 	"os"
+	"path"
 
 	"github.com/OpenDiablo2/pl2/pkg"
 )
@@ -18,7 +19,7 @@ type options struct {
 }
 
 func parseOptions(o *options) (terminate bool) {
-	o.pl2 = flag.String("pl2", "", "input pkg file (required)")
+	o.pl2 = flag.String("pl2", "", "input pl2 file (required)")
 	o.pngPath = flag.String("png", "", "path to output png file (optional)")
 
 	flag.Parse()
@@ -43,16 +44,22 @@ func main() {
 
 	pl2, err := pkg.FromBytes(data)
 	if err != nil {
+		fmt.Print(fmt.Errorf("Error decoding pl2: %w\n", err))
 		return
 	}
 
-	if *o.pngPath != "" {
-		img := makeImage(pl2)
+	pngPath := *o.pngPath
 
-		err = writeImage(*o.pngPath, img)
-		if err != nil {
-			fmt.Errorf("problem writing image, %w", err)
-		}
+	if pngPath == "" {
+		pngPath, _ = os.Getwd()
+		pngPath = path.Join(pngPath, "output.png")
+	}
+
+	img := makeImage(pl2)
+
+	err = writeImage(pngPath, img)
+	if err != nil {
+		fmt.Print(fmt.Errorf("problem writing image, %w", err))
 	}
 }
 
