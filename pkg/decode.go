@@ -31,9 +31,8 @@ func (pl2 *PL2) Decode(rs io.ReadSeeker) (*PL2, error) {
 	return pl2, nil
 }
 
-func (pl2 *PL2) decodeColors(stream *bitstream.Reader, dst color.Palette) error {
+func (pl2 *PL2) decodeColors(stream *bitstream.Reader, dst color.Palette, colorBytes int) error {
 	const (
-		colorBytes       = 4
 		rOff, gOff, bOff = 0, 1, 2 // rgb offsets in the returned bytes
 	)
 
@@ -55,13 +54,13 @@ func (pl2 *PL2) decodeColors(stream *bitstream.Reader, dst color.Palette) error 
 func (pl2 *PL2) decodeBasePalette(stream *bitstream.Reader) error {
 	pl2.BasePalette = make(color.Palette, numPaletteColors)
 
-	return pl2.decodeColors(stream, pl2.BasePalette)
+	return pl2.decodeColors(stream, pl2.BasePalette, 4)
 }
 
 func (pl2 *PL2) decodeTextColors(stream *bitstream.Reader) error {
 	pl2.TextColors = make(color.Palette, numTextColors)
 
-	return pl2.decodeColors(stream, pl2.TextColors)
+	return pl2.decodeColors(stream, pl2.TextColors, 3)
 }
 
 func (pl2 *PL2) decodeTransforms(stream *bitstream.Reader) (err error) {
