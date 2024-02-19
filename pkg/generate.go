@@ -3,6 +3,7 @@ package pkg
 import (
 	"image/color"
 	"math"
+	"fmt"
 
 	color2 "github.com/lucasb-eyer/go-colorful"
 )
@@ -183,6 +184,7 @@ func (pl2 *PL2) generateHueTransforms() {
 
 	trsIdx := 0
 
+	// Index 1 - 24: Hueshift
 	for shiftIdx := 0; shiftIdx < hueSteps; shiftIdx++ {
 		for palIdx := 0; palIdx < 256; palIdx++ {
 			hslColors := pl2.getHSLColors()
@@ -200,6 +202,7 @@ func (pl2 *PL2) generateHueTransforms() {
 		trsIdx++
 	}
 
+	// Index 25 - 48: Hueshift + Darken
 	for shiftIdx := 0; shiftIdx < hueSteps; shiftIdx++ {
 		for palIdx := 0; palIdx < 256; palIdx++ {
 			hslColors := pl2.getHSLColors()
@@ -225,6 +228,7 @@ func (pl2 *PL2) generateHueTransforms() {
 		trsIdx++
 	}
 
+	// Index 49 - 72: Hueshift + Brighten
 	for shiftIdx := 0; shiftIdx < hueSteps; shiftIdx++ {
 		for palIdx := 0; palIdx < 256; palIdx++ {
 			hslColors := pl2.getHSLColors()
@@ -251,7 +255,8 @@ func (pl2 *PL2) generateHueTransforms() {
 
 	hslColors := pl2.getHSLColors()
 
-	for palIdx := 0; palIdx < 256; palIdx++ { // greyscale
+	// Index 73: Grayscale (Revives)
+	for palIdx := 0; palIdx < 256; palIdx++ {
 		H, S, L := hslColors[palIdx].Hsl()
 
 		S = 0
@@ -264,6 +269,7 @@ func (pl2 *PL2) generateHueTransforms() {
 
 	trsIdx++
 
+	// Index 74: Grayscale + Brighten
 	for palIdx := 0; palIdx < 256; palIdx++ {
 		h, s, l := hslColors[palIdx].Hsl()
 
@@ -276,6 +282,7 @@ func (pl2 *PL2) generateHueTransforms() {
 
 	trsIdx++
 
+	// Index 75 - 98: Tolerance-based hueshift + Grayscale
 	for shiftIdx := 0; shiftIdx < hueSteps; shiftIdx++ {
 		for palIdx := 1; palIdx < 256; palIdx++ {
 			hslColors := pl2.getHSLColors()
@@ -299,9 +306,10 @@ func (pl2 *PL2) generateHueTransforms() {
 		trsIdx++
 	}
 
+	// Index 99: Full black
 	trsIdx++
 
-	// the full saturation variants
+	// Index 100 - 111: Full saturation hue shift
 	for shiftIdx := 0; shiftIdx < hueSteps/2; shiftIdx++ {
 		hslColors = pl2.getHSLColors()
 		for palIdx := 0; palIdx < 256; palIdx++ {
@@ -351,7 +359,29 @@ func (pl2 *PL2) generateRGBTransforms() {
 }
 
 func (pl2 *PL2) generateOtherTransforms() {
+	// UnknownVarations = 13, offset from 115
 	pl2.UnknownVariations = make([]Transform, unknownVariations)
+
+	hslColors := pl2.getHSLColors()
+
+	// Set custom color variations for PD2.
+	for customIdx := range pl2.UnknownVariations {
+		switch customIdx {
+		case 0:
+			// Index 115: Near-full black, rgb(4, 4, 4)
+			for palIdx := 0; palIdx < 256; palIdx++ {
+				H, S, L := hslColors[palIdx].Hsl()
+		
+				S = 0
+				L /= 16
+		
+				c := color2.Hsl(H, S, L + 0.015)
+
+				pl2.UnknownVariations[customIdx][palIdx] = uint8(pl2.BasePalette.Index(c))
+			}
+		default:
+		}
+	}
 
 	pl2.generateMaxComponentTransform()
 	pl2.generateDarkenedUnitTransform()

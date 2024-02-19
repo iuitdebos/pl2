@@ -10,7 +10,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/OpenDiablo2/pl2/pkg"
+	"github.com/muitdebos/pl2/pkg"
 )
 
 type options struct {
@@ -119,6 +119,8 @@ func getMainTransforms(p *pkg.PL2) []pkg.Transform {
 	addTransform(p.RedTones)
 	addTransform(p.GreenTones)
 	addTransform(p.BlueTones)
+
+	addTransforms(p.UnknownVariations)
 
 	addTransforms(p.MaxComponentBlend)
 	addTransform(p.DarkenedColorShift)

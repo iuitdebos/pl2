@@ -1,4 +1,4 @@
-module github.com/OpenDiablo2/pl2
+module github.com/muitdebos/pl2
 
 go 1.16
 

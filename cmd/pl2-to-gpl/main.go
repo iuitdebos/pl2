@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	pl2 "github.com/OpenDiablo2/pl2/pkg"
+	pl2 "github.com/muitdebos/pl2/pkg"
 	gpl "github.com/gravestench/gpl/pkg"
 )
 
